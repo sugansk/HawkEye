@@ -8,3 +8,4 @@ urllib.request
 bs4
 cv2
 flask
+geopy
