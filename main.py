@@ -7,6 +7,9 @@ import time
 import urllib.request
 from bs4 import BeautifulSoup
 import cv2
+import geocoder
+from geopy.geocoders import Nominatim
+import geopy.geocoders
 
 from flask import Flask,request
 
@@ -24,10 +27,15 @@ time.sleep(2.0)
 fps = FPS().start()
 
 app = Flask(__name__, static_url_path="")
-
+lat=[]
+long=[]
+count=0
 co_ordinates=""
 @app.route("/start")
 def start():
+	global lat
+	global long
+	global count
 	while True:
 		# grab the frame from the threaded video stream and resize it
 		# to have a maximum width of 400 pixels
@@ -64,11 +72,12 @@ def start():
 				print (CLASSES[idx])
 				if CLASSES[idx]=="person":
 					
-					# feed_xml=urllib.request.urlopen('127.0.0.1:5000/CurrLoc.html').read()
-					# feed=BeautifulSoup(feed_xml.decode('utf8'),"lxml")
-					# print('\n=============================================================================================\n',feed,'\n==============================================================\n')
-					
-					
+					feed_xml=urllib.request.urlopen('127.0.0.1:5000/CurrLoc.html').read()
+					feed=BeautifulSoup(feed_xml.decode('utf8'),"lxml")
+					#print('\n=============================================================================================\n',feed,'\n==============================================================\n')
+					lat.append(feed.find_all('div',id=re.compile('^lat'))
+					long.append(feed.find_all('div',id=re.compile('^long'))
+					count+=1	
 					label = "{}: {:.2f}%".format(CLASSES[idx],
 						confidence * 100)
 					cv2.rectangle(frame, (startX, startY), (endX, endY),
@@ -99,20 +108,18 @@ def start():
 @app.route("/getCause",methods=['POST'])
 def getCasualties():
 	try:
+		global lat
+		global long
+		global count
 		print('=================================================================')
 		data=request.data
 		data=data.decode('ascii')
 		print(data)
-		lat=[12.950847500000002]
-		lng=[80.14142869999999]
-		for i in range(0,9):
-			lat.append(lat[-1]+0.0000002)
-		for i in range(0,9):
-			lng.append(lng[-1]+0.000001)
-		#co_ordinates+="""<!DOCTYPE html><html><head><title>Casualties</title><style>table {font-family: arial, sans-serif;border-collapse: collapse;width: 100%;} padding: 8px;} tr:nth-child(even) {td, th { border: 1px solid #dddddd; text-align: left; background-color: #dddddd;}</style></head><body><h2>The List Of Casualties</h2>"""
+		
+		
 		co_ordinates="<!DOCTYPE html><html><head><title>Casualties</title><style>table {font-family: arial, sans-serif; border-collapse: collapse;width: 100%;} td, th { border: 1px solid #dddddd; text-align: left; padding: 8px;} tr:nth-child(even) { background-color: #dddddd;}</style></head><body><h2>The List Of Casualties</h2><table><tr><th>S No</th><th>Latitude</th><th>Longitude</th></tr>"
 		
-		for i in range(0,9):
+		for i in range(0,count):
 			co_ordinates+="<tr><td>"+str(i)+"</td><td>"+str(lat[i])+"</td><td>"+str(lng[i])+"</td></tr>"
 		co_ordinates=co_ordinates+'</table></body></html>'
 		print(co_ordinates,'------------------------------')
@@ -129,13 +136,8 @@ def getPath():
 		data=data.decode('ascii')
 		print(data)
 		co_ordinates='<!DOCTYPE html><html><head><title>Path Image</title><style>table {font-family: arial, sans-serif; border-collapse: collapse;width: 100%;} td, th { border: 1px solid #dddddd; text-align: left; padding: 8px;} tr:nth-child(even) { background-color: #dddddd;}</style></head><body><h1>Optimal Path To Rescue</h1><p><img src = "path.png" alt = "Optimal Path To Rescue" /></p><h2>Co-ordinates Of Casualties</h2><table><tr><th>S No</th><th>Latitude</th><th>Longitude</th></tr>'
-		lat=[12.950847500000002]
-		lng=[80.14142869999999]
-		for i in range(0,9):
-			lat.append(lat[-1]+0.0000002)
-		for i in range(0,9):
-			lng.append(lng[-1]+0.000001)
-		for i in range(0,9):
+		
+		for i in range(0,count):
 			co_ordinates+="<tr><td>"+str(i)+"</td><td>"+str(lat[i])+"</td><td>"+str(lng[i])+"</td></tr>"
 		co_ordinates=co_ordinates+'</table></body></html>'
 		return co_ordinates
