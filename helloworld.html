@@ -1,0 +1,42 @@
+<html>
+<head>
+<script type="text/javascript">
+var timer=0;
+function startTimer()
+{
+	setInterval("getLocation()",1000);
+}
+function timerUp()
+{
+	timer++;
+        var resetat=10; //change this number to adjust the length of time in seconds
+	if(timer==resetat)
+	{
+		//window.location.reload();
+		getLocation();
+	}
+	var tleft=resetat-timer;
+	document.getElementById('timer').innerHTML=tleft;
+}
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+        timerUp();
+    } else { 
+        document.getElementById('latlong').innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
+function showPosition(position) {
+    document.getElementById('latlong').innerHTML = "Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude;
+}
+
+	
+</script>
+</head>
+<body onload="startTimer()">
+Seconds until page reloads:
+<div id="timer"></div>
+<div id="latlong">	
+</div>
+</body>
+</html>
