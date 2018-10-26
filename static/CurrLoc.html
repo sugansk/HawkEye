@@ -1,0 +1,49 @@
+<html>
+<script type="text/javascript">
+var timer=0;
+function startTimer()
+{
+	setInterval("getLocation()",10);
+}
+function timerUp()
+{
+	timer++;
+        var resetat=10; //change this number to adjust the length of time in seconds
+	if(timer==resetat)
+	{
+		//window.location.reload();
+		getLocation();
+	}
+	var tleft=resetat-timer;
+	document.getElementById('timer').innerHTML=tleft;
+}
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+        timerUp();
+    } else { 
+        document.getElementById('latlong').innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
+function showPosition(position) {
+    document.getElementById('lat').innerHTML =  position.coords.latitude
+    document.getElementById('long').innerHTML = position.coords.longitude;
+   document.getElementById('latlong').innerHTML = timer+"<br>"+"Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude;
+ 
+}
+
+
+
+
+	
+</script>
+
+<!-- <a href="http://127.0.0.1:5000/start" ><input type = "button" value = "submit" /></a>
+ --><body onload="startTimer()">
+Seconds until page reloads:
+<div id="timer"> </div>
+<div id="latlong"> </div>
+<div id="lat"> </div>
+<div id="long"> </div>
+</form>
+</html>
