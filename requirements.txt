@@ -1,0 +1,10 @@
+imutils.video
+numpy
+argparse
+imutils
+time
+geocoder
+urllib.request
+bs4
+cv2
+flask
