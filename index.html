@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<script type="text/javascript">
+var timer=0;
+function startTimer()
+{
+  setInterval("getLocation()",10);
+}
+function getCasualties(){
+  var url="http://127.0.0.1:5000/getCause"
+  var params="aslam"
+  var xmlHttp=new XMLHttpRequest();
+  
+  xmlHttp.open("POST",url,false);
+  xmlHttp.send(params);
+  //var ss=xmlHttp.responseText;
+  //alert(ss);
+  var html=xmlHttp.responseText;
+  var strWindowFeatures = "menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes,width=500,height=500";
+  var windowObjectReference = window.open("","_blank", strWindowFeatures);
+  windowObjectReference.document.open()
+  windowObjectReference.document.write(html)
+  windowObjectReference.document.close()
+}
+function getPath(){
+  var url="http://127.0.0.1:5000/getPath"
+  var params="aslam"
+  var xmlHttp=new XMLHttpRequest();
+  
+  xmlHttp.open("POST",url,false);
+  xmlHttp.send(params);
+  //var ss=xmlHttp.responseText;
+  //alert(ss);
+  var html=xmlHttp.responseText;
+  var strWindowFeatures = "menubar=yes,location=yes,resizable=yes,scrollbars=yes,status=yes,width=500,height=500";
+  var windowObjectReference = window.open("","_blank", strWindowFeatures);
+  windowObjectReference.document.open()
+  windowObjectReference.document.write(html)
+  windowObjectReference.document.close()
+}
+function timerUp()
+{
+  timer++;
+        var resetat=10; //change this number to adjust the length of time in seconds
+  if(timer==resetat)
+  {
+    //window.location.reload();
+    getLocation();
+  }
+  var tleft=resetat-timer;
+  //console.log(tleft);
+}
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+        timerUp();
+    } else { 
+        document.getElementById('lat').innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
+function showPosition(position) {
+    document.getElementById('lat').innerHTML =  "Latitude :"+position.coords.latitude
+    document.getElementById('long').innerHTML = "Longitude  :"+position.coords.longitude;
+   //document.getElementById('latlong').innerHTML = timer+"<br>"+"Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude;
+ 
+}
+</script>
+
+
+<style>
+body, html {
+  height: 100%;
+  margin: 0;
+  font: 400 15px/1.8 "Lato", sans-serif;
+  color: #777;
+}
+
+.bgimg-1, .bgimg-2, .bgimg-3, .bgimg-4 {
+  position: relative;
+  opacity: 0.65;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+}
+.bgimg-1 {
+  background-image: url("img_parallax.jpg");
+  min-height: 100%;
+}
+
+.bgimg-2 {
+  background-image: url("img_parallax2.jpg");
+  min-height: 400px;
+}
+
+.bgimg-3 {
+  background-image: url("img_parallax3.jpg");
+  min-height: 400px;
+}
+
+.bgimg-4 {
+  background-image: url("img_parallax4.jpg");
+  min-height: 100%;
+}
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+.button5 {
+    background-color: white;
+    color: black;
+    border: 2px solid #555555;
+}
+
+.button5:hover {
+    background-color: #555555;
+    color: white;
+}
+.button4 {
+    background-color: white;
+    color: #FF5733;
+    border: 2px solid #FF5733;
+}
+
+.button4:hover {
+    background-color: #FF5733;
+    color: white;
+}
+
+.caption {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  text-align: center;
+  color: #000;
+}
+
+.caption span.border {
+  background-color: #111;
+  color: #fff;
+  padding: 18px;
+  font-size: 25px;
+  letter-spacing: 10px;
+}
+
+h3 {
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  font: 20px "Lato", sans-serif;
+  color: #111;
+}
+
+/* Turn off parallax scrolling for tablets and phones */
+@media only screen and (max-device-width: 1024px) {
+    .bgimg-1, .bgimg-2, .bgimg-3 {
+        background-attachment: scroll;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="bgimg-1">
+  <div class="caption">
+    <span class="border">WE WATCH OVER YOU</span>
+    <br> <br> <br> <br> <br> <br>
+    <button class="button button5" onclick="startTimer()">START</button>
+  </div>
+</div>
+
+<div style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;">
+  <div id="lat">Latitude : 0</div>
+  <div id="long">Longitude : 0</div>
+  <h3 style="text-align:center;">Hawk Eye</h3>
+  <p>It is an initiative to save the victims who are all trapped in the natural diaster zone.For defence applications, drones play a major role in surveillance.  This can be of various types like Terain Mapping , Geo-Tagging, normal CCTV, etc.Drones provide the added benefit of wireless control and real time data recording.Another defence specific application is weapon deployment modules where drones mounted with weapons are used in war zones.</p>
+  <p>
+  <b>Civilian Purposes</b>
+  This field of application of drones is relatively new. Drones are finding immense popularity in areas like Photography, weather forecasts, animal behaviour studies, agriculture, rescue operations, etc. Now-a-days Drones are developed in its way to the zenith. So we make use of it by fixing a camera so that we could record the human beings from the real time video streams and mark their Co-ordinates and find the best possible route to save all the casualities. </p>
+</div>
+
+<div class="bgimg-2">
+  <div class="caption">
+    <!-- <form action='\getCause' method="POST"> -->
+    <button class="button button4" onclick="getCasualties()">Casualities Locations</button>
+    <!-- </form> -->
+  </div>
+</div>
+
+<div style="position:relative;">
+  <div style="color:#ddd;background-color:#282E34;text-align:center;padding:50px 80px;text-align: justify;">
+    <p>Shows the spots of human trapped locations in the danger zone where the calamity has happened</p>
+  </div>
+</div>
+
+<div class="bgimg-3">
+  <div class="caption">
+    <button class="button button5" onclick="getPath()">Suggest Path</button>
+  </div>
+</div>
+
+<div style="position:relative;">
+  <div style="color:#ddd;background-color:#282E34;text-align:center;padding:50px 80px;text-align: justify;">
+    <p>Suggest the Rescue team to save all the casualities over the natural disaster zone by providing the optimal path over that zone</p>
+  </div>
+</div>
+
+<div class="bgimg-4">
+  <div class="caption">
+    <span class="border">THE EYE WHO LOOK FOR YOU</span>
+  </div>
+</div>
+
+</body>
+</html>
